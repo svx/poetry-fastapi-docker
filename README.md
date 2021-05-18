@@ -10,7 +10,8 @@
 ## About The Project
 
 This repo serves as a minimal reference on setting up docker multi-stage builds with poetry.
-This is a updated and modified fork of [python-poetry-docker-example](https://github.com/michael0liver/python-poetry-docker-example).
+
+This is an updated and modified fork of [python-poetry-docker-example](https://github.com/michael0liver/python-poetry-docker-example).
 
 ### Differences
 
