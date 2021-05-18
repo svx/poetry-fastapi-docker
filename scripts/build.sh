@@ -7,4 +7,4 @@ BASE_DIR="$(dirname "$CURRENT_DIR")"
 
 cd $BASE_DIR
 
-docker build --tag poetry-project --file docker/Dockerfile . 
+docker build --tag poetry-project --file docker/Dockerfile .
