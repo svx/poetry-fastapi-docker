@@ -19,10 +19,14 @@ ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 # builder-base is used to build dependencies
 FROM python-base as builder-base
-RUN apt-get update \
+RUN buildDeps="build-essential" \
+    && apt-get update \
     && apt-get install --no-install-recommends -y \
         curl \
-        build-essential
+        vim \
+        netcat \
+    && apt-get install -y --no-install-recommends $buildDeps \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
 ENV POETRY_VERSION=1.1.5
@@ -68,13 +72,11 @@ RUN black --config ./pyproject.toml --check app tests
 RUN isort --settings-path ./pyproject.toml --recursive --check-only
 CMD ["tail", "-f", "/dev/null"]
 
-
 # 'test' stage runs our unit tests with pytest and
 # coverage.  Build will fail if test coverage is under 95%
 FROM development AS test
 RUN coverage run --rcfile ./pyproject.toml -m pytest ./tests
 RUN coverage report --fail-under 95
-
 
 # 'production' stage uses the clean 'python-base' stage and copyies
 # in only our runtime deps that were installed in the 'builder-base'
