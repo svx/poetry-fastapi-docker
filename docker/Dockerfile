@@ -3,7 +3,7 @@
 # See https://docs.docker.com/develop/develop-images/multistage-build/
 
 # Creating a python base with shared environment variables
-FROM python:3.9-slim-buster as python-base
+FROM python:3.10-slim-bulleye AS python-base
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=off \
@@ -18,7 +18,7 @@ ENV PYTHONUNBUFFERED=1 \
 ENV PATH="$POETRY_HOME/bin:$VENV_PATH/bin:$PATH"
 
 # builder-base is used to build dependencies
-FROM python-base as builder-base
+FROM python-base AS builder-base
 RUN buildDeps="build-essential" \
     && apt-get update \
     && apt-get install --no-install-recommends -y \
@@ -29,7 +29,7 @@ RUN buildDeps="build-essential" \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
-ENV POETRY_VERSION=1.1.5
+ENV POETRY_VERSION=1.1.14
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python && \
     chmod a+x /opt/poetry/bin/poetry
@@ -80,7 +80,7 @@ RUN coverage report --fail-under 95
 
 # 'production' stage uses the clean 'python-base' stage and copyies
 # in only our runtime deps that were installed in the 'builder-base'
-FROM python-base as production
+FROM python-base AS production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
