@@ -1,0 +1,7 @@
+# version: "3.7" # Uncomment for older compose versions
+services:
+  poetry-project:
+    container_name: poetry-project
+    build: .
+    ports:
+      - "8000:8000"

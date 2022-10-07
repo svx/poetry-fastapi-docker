@@ -29,16 +29,16 @@ RUN buildDeps="build-essential" \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
-ENV POETRY_VERSION=1.1.14
+ENV POETRY_VERSION=1.2.1
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python && \
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python3 - --version ${POETRY_VERSION} && \
     chmod a+x /opt/poetry/bin/poetry
 
 # We copy our Python requirements here to cache them
 # and install only runtime deps using poetry
 WORKDIR $PYSETUP_PATH
 COPY ./poetry.lock ./pyproject.toml ./
-RUN poetry install --no-dev  # respects
+RUN poetry install --only main  # respects
 
 # 'development' stage installs all dev deps and can be used to develop code.
 # For example using docker-compose to mount local volume under /app
@@ -50,7 +50,7 @@ COPY --from=builder-base $POETRY_HOME $POETRY_HOME
 COPY --from=builder-base $PYSETUP_PATH $PYSETUP_PATH
 
 # Copying in our entrypoint
-COPY ./docker/docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
 # venv already has runtime deps installed we get a quicker install
@@ -84,17 +84,17 @@ FROM python-base AS production
 ENV FASTAPI_ENV=production
 
 COPY --from=builder-base $VENV_PATH $VENV_PATH
-COPY ./docker/gunicorn_conf.py /gunicorn_conf.py
+COPY gunicorn_conf.py /gunicorn_conf.py
 
-COPY ./docker/docker-entrypoint.sh /docker-entrypoint.sh
+COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-# Create user
-RUN groupadd -g 1500 sven && \
-    useradd -m -u 1500 -g sven sven
+# Create user with the name poetry
+RUN groupadd -g 1500 poetry && \
+    useradd -m -u 1500 -g poetry poetry
 
-COPY --chown=sven:sven ./app /app
-USER sven
+COPY --chown=poetry:poetry ./app /app
+USER poetry
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh $0 $@
