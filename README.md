@@ -21,6 +21,7 @@ This is an updated and modified fork of [python-poetry-docker-example](https://g
 - Install poetry from python-poetry GitHub source
 - Does not run production image as `/root`
 - Set the SHELL option `-o pipefail` before RUN with a pipe
+
 ## Requirements
 
 - [Docker >= 17.05](https://www.python.org/downloads/release/python-381/)
@@ -94,6 +95,15 @@ docker run -it poetry-project:latest bash
 ```
 
 If you do not specify a target the resulting image will be the last image defined which in our case is the 'production' image.
+
+Run the 'production' image:
+
+```shell
+docker run -it -p 8000:8000 poetry-project
+```
+
+Open your browser and go to [http://localhost:8000/redoc](http://localhost:8000/redoc) to see the API spec in ReDoc.
+
 
 ## Credits
 
