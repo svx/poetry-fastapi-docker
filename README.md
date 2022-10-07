@@ -105,6 +105,19 @@ docker run -it -p 8000:8000 poetry-project
 Open your browser and go to [http://localhost:8000/redoc](http://localhost:8000/redoc) to see the API spec in ReDoc.
 
 
+### Docker Compose
+
+You can build and run the container with Docker Compose
+
+```shell
+docker compose up
+```
+
+Or, run in *detached* mode if you prefer.
+
+> **NOTE** - If you use an older version of Docker Compose,
+> you may need to uncomment the version in the docker-compose,yml file!
+
 ## Credits
 
 - [Michael Oliver](https://github.com/michael0liver/python-poetry-docker-example)
