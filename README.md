@@ -70,7 +70,7 @@ To run testing/linting locally you would execute lint/test in the [scripts direc
 
 Build images with:
 ```shell
-docker build --tag poetry-project --file docker/Dockerfile .
+docker build --tag poetry-project .
 ```
 
 The Dockerfile uses multi-stage builds to run lint and test stages before building the production stage.
@@ -79,19 +79,19 @@ If linting or testing fails the build will fail.
 You can stop the build at specific stages with the `--target` option:
 
 ```shell
-docker build --name poetry-project --file docker/Dockerfile . --target <stage>
+docker build --name poetry-project --target $STAGE .
 ```
 
 For example we wanted to stop at the **test** stage:
 
 ```shell
-docker build --tag poetry-project --file docker/Dockerfile --target test .
+docker build --tag poetry-project --target test .
 ```
 
 We could then get a shell inside the container with:
 
 ```shell
-docker run -it poetry-project:latest bash
+docker run -it poetry-project bash
 ```
 
 If you do not specify a target the resulting image will be the last image defined which in our case is the 'production' image.
