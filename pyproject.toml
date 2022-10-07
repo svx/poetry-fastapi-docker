@@ -7,6 +7,8 @@ name = "backend"
 version = "0.1.0"
 description = "Minimal Poetry example with Docker Multi-Stage builds"
 authors = ["Michael Oliver <mo175@live.com>"]
+maintainers = ["svx <sven@leftxs.org>"]
+
 
 [tool.poetry.dependencies]
 python = "^3.7"

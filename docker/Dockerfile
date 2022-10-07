@@ -29,7 +29,7 @@ RUN buildDeps="build-essential" \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry - respects $POETRY_VERSION & $POETRY_HOME
-ENV POETRY_VERSION=1.1.14
+ENV POETRY_VERSION=1.2.1
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python && \
     chmod a+x /opt/poetry/bin/poetry
@@ -89,12 +89,12 @@ COPY ./docker/gunicorn_conf.py /gunicorn_conf.py
 COPY ./docker/docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod +x /docker-entrypoint.sh
 
-# Create user
-RUN groupadd -g 1500 sven && \
-    useradd -m -u 1500 -g sven sven
+# Create user with the name poetry
+RUN groupadd -g 1500 poetry && \
+    useradd -m -u 1500 -g poetry poetry
 
-COPY --chown=sven:sven ./app /app
-USER sven
+COPY --chown=poetry:poetry ./app /app
+USER poetry
 WORKDIR /app
 
 ENTRYPOINT /docker-entrypoint.sh $0 $@

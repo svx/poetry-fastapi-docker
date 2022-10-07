@@ -13,6 +13,8 @@ This repo serves as a minimal reference on setting up docker multi-stage builds 
 
 This is an updated and modified fork of [python-poetry-docker-example](https://github.com/michael0liver/python-poetry-docker-example).
 
+> **Note** - This is only tested with Linux and macOS
+
 ### Differences
 
 - Newer poetry version
@@ -96,6 +98,3 @@ If you do not specify a target the resulting image will be the last image define
 ## Credits
 
 - [Michael Oliver](https://github.com/michael0liver/python-poetry-docker-example)
-
-
-
