@@ -1,5 +1,7 @@
 <h1 align="center">Poetry - FastAPI - Docker</h1>
 
+> **Note** I currently do not actively use or maintain this project, the versions of Debian, Python and Poetry are not up to date!
+
 ## Table Of Contents
 
 - [About the Project](#about-the-project)
