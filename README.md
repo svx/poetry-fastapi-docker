@@ -9,6 +9,7 @@
 - [Local development](#local-development)
 - [Docker](#docker)
 - [Credits](#credits)
+
 ## About The Project
 
 This repo serves as a minimal reference on setting up docker multi-stage builds with poetry.
@@ -67,12 +68,14 @@ API will be available at [localhost:8000/](http://localhost:8000/)
 - Swagger UI docs at [localhost:8000/docs](http://localhost:8000/docs)
 - ReDoc docs at [localhost:8000/redoc](http://localhost:8000/redoc)
 
-To run testing/linting locally you would execute lint/test in the [scripts directory](/scripts).
+To run testing/linting locally you would run lint/test in the [scripts directory](/scripts).
+
 ## Docker
 
 Build images with:
+
 ```shell
-docker build --tag poetry-project .
+docker build -t poetry-project .
 ```
 
 The Dockerfile uses multi-stage builds to run lint and test stages before building the production stage.
@@ -81,13 +84,13 @@ If linting or testing fails the build will fail.
 You can stop the build at specific stages with the `--target` option:
 
 ```shell
-docker build --name poetry-project --target $STAGE .
+docker build -t poetry-project --target $STAGE .
 ```
 
 For example we wanted to stop at the **test** stage:
 
 ```shell
-docker build --tag poetry-project --target test .
+docker build -t poetry-project --target test .
 ```
 
 We could then get a shell inside the container with:
@@ -105,7 +108,6 @@ docker run -it -p 8000:8000 poetry-project
 ```
 
 Open your browser and go to [http://localhost:8000/redoc](http://localhost:8000/redoc) to see the API spec in ReDoc.
-
 
 ### Docker Compose
 
